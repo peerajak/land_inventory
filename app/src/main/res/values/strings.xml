@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2016 The Android Open Source Project
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+          http://www.apache.org/licenses/LICENSE-2.0
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <!-- Name for the application [CHAR LIMIT=12] -->
+    <string name="app_name">Lands</string>
+
+    <!-- Label for overflow menu option that inserts fake land data into the app [CHAR LIMIT=20] -->
+    <string name="action_insert_dummy_data">Insert Dummy Data</string>
+
+    <!-- Label for overflow menu option that deletes all land data in the app [CHAR LIMIT=20] -->
+    <string name="action_delete_all_entries">Delete All Lands</string>
+
+    <!-- Title for the activity to add a new land [CHAR LIMIT=20] -->
+    <string name="editor_activity_title_new_land">Add a Land</string>
+
+    <!-- Title for the activity to add a new land [CHAR LIMIT=20] -->
+    <string name="editor_activity_title_edit_land">Edit a Land</string>
+
+    <!-- Label for editor menu option to save land and leave editor [CHAR LIMIT=20] -->
+    <string name="action_save">Save</string>
+
+    <!-- Label for editor overflow menu option that deletes the current land [CHAR LIMIT=20] -->
+    <string name="action_delete">Delete</string>
+
+    <!-- Label for overview category of attributes in the editor [CHAR LIMIT=30] -->
+    <string name="category_overview">Land Details</string>
+
+    <!-- Label for province information in the editor [CHAR LIMIT=30] -->
+    <string name="category_province">Province</string>
+
+    <!-- Label for measurement information in the editor [CHAR LIMIT=30] -->
+    <string name="category_measurement">Area in Sq. Wa (integer only)</string>
+
+    <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_land_name">Name</string>
+
+    <!-- Text hint for breed field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_land_desc">Description</string>
+
+    <!-- Text hint for name field in the editor [CHAR LIMIT=30] -->
+    <string name="hint_land_size">Land Area</string>
+
+    <!-- Units for weight of the land (kilograms) [CHAR LIMIT=5] -->
+    <string name="unit_land_weight">Sq.Wa</string>
+
+    <!-- Label for dropdown menu option if the land's province is unknown [CHAR LIMIT=20] -->
+    <string name="province_faraway">Far Away</string>
+
+    <!-- Label for dropdown menu option if the land is male [CHAR LIMIT=20] -->
+    <string name="province_aroundbangkok">Around Bangkok Metro</string>
+
+    <!-- Label for dropdown menu option if the land is female [CHAR LIMIT=20] -->
+    <string name="province_threehours">Within Three hours</string>
+
+    <!-- Toast message in editor when new land has been successfully inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_land_successful">Land saved</string>
+
+    <!-- Toast message in editor when new land has failed to be inserted [CHAR LIMIT=NONE] -->
+    <string name="editor_insert_land_failed">Error with saving land</string>
+
+    <!-- Title text for the empty view, which describes the empty dog house image [CHAR LIMIT=50] -->
+    <string name="empty_view_title_text">Add your properties</string>
+
+    <!-- Subtitle text for the empty view that prompts the user to add a land [CHAR LIMIT=50] -->
+    <string name="empty_view_subtitle_text">Get started by adding a land</string>
+
+    <!-- Dialog message when user is leaving editor but hasn't saved changes [CHAR LIMIT=NONE] -->
+    <string name="unsaved_changes_dialog_msg">Discard your changes and quit editing?</string>
+
+    <!-- Dialog button text for the option to discard a user's changes [CHAR LIMIT=20] -->
+    <string name="discard">Discard</string>
+
+    <!-- Dialog button text for the option to keep editing the current land [CHAR LIMIT=20] -->
+    <string name="keep_editing">Keep Editing</string>
+    <!-- Toast message in editor when current land was successfully deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_land_successful">Land deleted</string>
+
+    <!-- Toast message in editor when current land has failed to be deleted [CHAR LIMIT=NONE] -->
+    <string name="editor_delete_land_failed">Error with deleting land</string>
+
+    <!-- Dialog message to ask the user to confirm deleting the current land [CHAR LIMIT=NONE] -->
+    <string name="delete_dialog_msg">Delete this land?</string>
+
+    <!-- Dialog button text for the option to confirm deleting the current land [CHAR LIMIT=20] -->
+    <string name="delete">Delete</string>
+
+    <!-- Dialog button text for the option to cancel deletion of the current land [CHAR LIMIT=20] -->
+    <string name="cancel">Cancel</string>
+
+    <!-- Label for the land's breed if the breed is unknown [CHAR LIMIT=20] -->
+    <string name="unknown_province">Unknown Province</string>
+
+</resources>
