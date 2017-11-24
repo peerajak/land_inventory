@@ -353,7 +353,9 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             case android.R.id.home:
                 // If the land hasn't changed, continue with navigating up to parent activity
                 // which is the {@link CatalogActivity}.
+
                 if (!mLandHasChanged) {
+                    Log.i("EditActivity","onOptionsItemSelected");
                     NavUtils.navigateUpFromSameTask(EditorActivity.this);
                     return true;
                 }
