@@ -25,6 +25,9 @@ public final class LandsContract {
         public static final String COLUMN_LAND_IMAGE = "photo";
         public static final String COLUMN_LAND_LATITUDE = "latitude";
         public static final String COLUMN_LAND_LONGITUDE = "longitude";
+        public static final String COLUMN_LAND_PHONE = "phone";
+        public static final String COLUMN_LAND_HOMEPRICE = "homeprice";
+        public static final String COLUMN_LAND_HOMEQUANTITY = "honequantity";
 
         public static final int PROVINCE_AROUNDBANGKOK = 1;
         public static final int PROVINCE_THREEHOURS = 2;

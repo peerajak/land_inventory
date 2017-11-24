@@ -10,19 +10,17 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-    <!-- The app branding color for the app bar -->
-    <color name="colorPrimary">#39CDDE</color>
+<!-- Options menu for the EditorActivity -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".DetailActivity">
 
-    <!-- Darker variant for the status bar and contextual app bars -->
-    <color name="colorPrimaryDark">#1AD256</color>
+    <item
+        android:id="@+id/action_save"
+        android:title="@string/action_save"
+        android:icon="@drawable/ic_action_name"
+        app:showAsAction="always" />
 
-    <!-- Accent color for UI controls like checkboxes and text fields -->
-    <color name="colorAccent">#F0514B</color>
 
-    <!-- Primary color for the editor -->
-    <color name="editorColorPrimary">#39CDDE</color>
-
-    <!-- Primary dark color for the editor -->
-    <color name="editorColorPrimaryDark">#1AD256</color>
-</resources>
+</menu>

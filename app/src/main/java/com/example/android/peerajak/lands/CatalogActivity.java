@@ -58,8 +58,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             LandEntry.COLUMN_LAND_SIZE,
             LandEntry.COLUMN_LAND_LATITUDE,
             LandEntry.COLUMN_LAND_LONGITUDE,
+            //LandEntry.COLUMN_LAND_HOMEPRICE,
             LandEntry.COLUMN_LAND_IMAGE
-
     };
 
     @Override
@@ -112,11 +112,11 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
         list_lands.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent editIntent = new Intent(CatalogActivity.this, EditorActivity.class);
+                Intent detailIntent = new Intent(CatalogActivity.this, DetailActivity.class);
                 Uri currentLandUri = ContentUris.withAppendedId(LandEntry.CONTENT_URI,id);
-                Log.i("CatalogActivity",currentLandUri.toString());
-                editIntent.setData(currentLandUri);
-                startActivity(editIntent);
+                Log.i("CatalogActivity","onClickListener:"+currentLandUri.toString());
+                detailIntent.setData(currentLandUri);
+                startActivity(detailIntent);
             }
         });
 
@@ -141,30 +141,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_catalog.xml file.
-        // This adds menu items to the app bar.
-        getMenuInflater().inflate(R.menu.menu_catalog, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // User clicked on a menu option in the app bar overflow menu
-        switch (item.getItemId()) {
-            // Respond to a click on the "Insert dummy data" menu option
-            case R.id.action_insert_dummy_data:
-                insertLands();
-
-                return true;
-            // Respond to a click on the "Delete all entries" menu option
-            case R.id.action_delete_all_entries:
-                deleteAllLands();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     private void deleteAllLands() {
         int num_row_effect= getContentResolver().delete(LandEntry.CONTENT_URI, null, null);

@@ -32,6 +32,9 @@ public class LandsDbhelper extends SQLiteOpenHelper {
                 LandEntry.COLUMN_LAND_DESC + " TEXT,"+
                 LandEntry.COLUMN_LAND_LATITUDE + " DOUBLE,"+
                 LandEntry.COLUMN_LAND_LONGITUDE + " DOUBLE,"+
+                LandEntry.COLUMN_LAND_PHONE + " TEXT NOT NULL,"+
+                LandEntry.COLUMN_LAND_HOMEPRICE + " INTEGER NOT NULL ,"+
+                //LandEntry.COLUMN_LAND_HOMEQUANTITY + " INTEGER NOT NULL,"+
                 LandEntry.COLUMN_LAND_IMAGE + " TEXT);";
         Log.i("Dbhelper","just befor exec create db.8");
         db.execSQL(sqlCreateLandsTable);

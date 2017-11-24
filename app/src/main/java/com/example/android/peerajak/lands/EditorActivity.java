@@ -48,6 +48,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.net.Uri;
+
+import com.example.android.peerajak.lands.data.LandsContract;
 import com.example.android.peerajak.lands.data.LandsContract.LandEntry;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -66,13 +68,14 @@ import java.util.Date;
  * Allows user to create a new land or edit an existing one.
  */
 public class EditorActivity extends AppCompatActivity  implements LoaderManager.LoaderCallbacks<Cursor> ,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener , LocationListener{
-    LandsDbhelper mDbHelper;
+    private LandsDbhelper mDbHelper;
     /** EditText field to enter the land's name */
     private EditText mNameEditText;
 
     /** EditText field to enter the land's breed */
     private EditText mDescEditText;
     private int mCurrentId=0;
+    private int start_home_quantity=0;
     /** EditText field to enter the land's weight */
     private EditText mSizeEditText;
 
@@ -84,6 +87,9 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
     private boolean mLandHasChanged = false;
     private ImageView mImageView;
     private Button mTakePhoto;
+    private EditText mPhoneEditText;
+    private EditText mHomePrice;
+
     /**
      * Gender of the land. The possible values are:
      * 0 for unknown province, 1 for male, 2 for female.
@@ -117,7 +123,7 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         }else{
             setTitle(R.string.editor_activity_title_edit_land);
             mTakePhoto.setVisibility(View.GONE);
-            Log.i("CatalogActivity",mCurrentLandUri.toString());
+            Log.i("EditorActivity",mCurrentLandUri.toString());
             mIsNewInsert = false;
             getSupportLoaderManager().initLoader(mLoaderManagerId, null, this);
             String[] parts = mCurrentLandUri.toString().split("/");
@@ -130,12 +136,13 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         mDescEditText = (EditText) findViewById(R.id.edit_land_desc);
         mSizeEditText = (EditText) findViewById(R.id.edit_land_size);
         mProvinceSpinner = (Spinner) findViewById(R.id.spinner_province);
-
+        mPhoneEditText = (EditText) findViewById(R.id.edit_phone_number);
         setupSpinner();
         mDbHelper = new LandsDbhelper(this);
         mNameEditText.setOnTouchListener(mTouchListener);
         mDescEditText.setOnTouchListener(mTouchListener);
         mSizeEditText.setOnTouchListener(mTouchListener);
+        mHomePrice = (EditText) findViewById(R.id.home_price);
         mProvinceSpinner.setOnTouchListener(mTouchListener);
         mImageView = (ImageView) findViewById(R.id.camphoto);
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -237,12 +244,7 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         TextView locationStatus = (TextView) findViewById(R.id.location_status);
         locationStatus.setText("Status: CONNECTED");
         mCurrentLocation = location;
-        mLatitude = mCurrentLocation.getLatitude();
-        mLongitude = mCurrentLocation.getLongitude();
-        TextView latitude_text = (TextView) findViewById(R.id.latitude);
-        latitude_text.setText("" +mLatitude);
-        TextView longitude_text = (TextView) findViewById(R.id.longitude);
-        longitude_text.setText("" + mLongitude);
+
     }
 
 
@@ -396,15 +398,18 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         String name = mNameEditText.getText().toString();
         String desc = mDescEditText.getText().toString();
         String sizerai_str = mSizeEditText.getText().toString();
+        String currentPhone = mPhoneEditText.getText().toString();
+        String homeprice_str = mHomePrice.getText().toString();
 
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(sizerai_str)){
+
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(sizerai_str) || TextUtils.isEmpty(currentPhone) || TextUtils.isEmpty(homeprice_str)){
             return;
         }
-
+        Log.i("EditorActivity","insertLand");
         int sizerai = Integer.parseInt(sizerai_str.trim());
-
+        int homeprice =Integer.parseInt(homeprice_str.trim());
         ContentValues values = new ContentValues();
-
+        Log.i("EditorActivity","insertLand");
         values.put(LandEntry.COLUMN_LAND_NAME,name.trim());
         values.put(LandEntry.COLUMN_LAND_DESC,desc.trim());
         values.put(LandEntry.COLUMN_LAND_PROVINCE,mProvince);
@@ -412,8 +417,12 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         values.put(LandEntry.COLUMN_LAND_LATITUDE,mLatitude);
         values.put(LandEntry.COLUMN_LAND_LONGITUDE,mLongitude);
         values.put(LandEntry.COLUMN_LAND_IMAGE,mCurrentPhotoPath);
-        
+        values.put(LandEntry.COLUMN_LAND_PHONE,currentPhone);
+        //values.put(LandEntry.COLUMN_LAND_HOMEQUANTITY,start_home_quantity);
+        values.put(LandEntry.COLUMN_LAND_HOMEPRICE,homeprice);
+        Log.i("EditorActivity","insertLand");
         Uri newUri = getContentResolver().insert(LandEntry.CONTENT_URI, values);
+        Log.i("EditorActivity","insertLand");
         if(newUri == null) {
             Toast.makeText(this,"Error insertion",Toast.LENGTH_SHORT).show();
         }else {
@@ -426,13 +435,16 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         String name = mNameEditText.getText().toString();
         String desc = mDescEditText.getText().toString();
         String sizerai_str = mSizeEditText.getText().toString();
+        String currentPhone = mPhoneEditText.getText().toString();
+        String homeprice_str = mHomePrice.getText().toString();
 
-        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(sizerai_str)){
+
+        if (TextUtils.isEmpty(name) || TextUtils.isEmpty(sizerai_str) || TextUtils.isEmpty(currentPhone) || TextUtils.isEmpty(homeprice_str)){
             return;
         }
 
         int sizerai = Integer.parseInt(sizerai_str.trim());
-
+        int homeprice =Integer.parseInt(homeprice_str.trim());
         ContentValues values = new ContentValues();
 
         values.put(LandEntry.COLUMN_LAND_NAME,name.trim());
@@ -441,7 +453,9 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         values.put(LandEntry.COLUMN_LAND_SIZE,sizerai);
         values.put(LandEntry.COLUMN_LAND_LATITUDE,mLatitude);
         values.put(LandEntry.COLUMN_LAND_LONGITUDE,mLongitude);
+        values.put(LandEntry.COLUMN_LAND_PHONE,currentPhone);
         //values.put(LandEntry.COLUMN_LAND_IMAGE,mCurrentPhotoPath);
+        values.put(LandEntry.COLUMN_LAND_HOMEPRICE,homeprice);
 
         int num_effect = getContentResolver().update(mCurrentLandUri, values,null,null);
         if(num_effect == 0) {
@@ -466,10 +480,15 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         String[] projection = {
                 LandEntry._ID,
-                LandEntry.COLUMN_LAND_NAME,
-                LandEntry.COLUMN_LAND_DESC,
-                LandEntry.COLUMN_LAND_PROVINCE,
-                LandEntry.COLUMN_LAND_SIZE };
+                LandsContract.LandEntry.COLUMN_LAND_NAME,
+                LandsContract.LandEntry.COLUMN_LAND_DESC,
+                LandsContract.LandEntry.COLUMN_LAND_PROVINCE,
+                LandsContract.LandEntry.COLUMN_LAND_SIZE,
+                LandsContract.LandEntry.COLUMN_LAND_PHONE,
+                LandsContract.LandEntry.COLUMN_LAND_HOMEPRICE,
+                //LandsContract.LandEntry.COLUMN_LAND_HOMEQUANTITY,
+                LandsContract.LandEntry.COLUMN_LAND_IMAGE};
+
 
         // This loader will execute the ContentProvider's query method on a background thread
         return new CursorLoader(this,   // Parent activity context
@@ -490,17 +509,21 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             int descColumnIndex = cursor.getColumnIndex(LandEntry.COLUMN_LAND_DESC);
             int provinceColumnIndex = cursor.getColumnIndex(LandEntry.COLUMN_LAND_PROVINCE);
             int sizeraiColumnIndex = cursor.getColumnIndex(LandEntry.COLUMN_LAND_SIZE);
-
+            int phoneColumnIndex = cursor.getColumnIndex(LandEntry.COLUMN_LAND_PHONE);
+            int homepriceColumnIndex = cursor.getColumnIndex(LandEntry.COLUMN_LAND_HOMEPRICE);
             // Extract out the value from the Cursor for the given column index
             String name = cursor.getString(nameColumnIndex);
             String desc = cursor.getString(descColumnIndex);
+            String phone_str = cursor.getString(phoneColumnIndex);
             int province = cursor.getInt(provinceColumnIndex);
             int sizerai = cursor.getInt(sizeraiColumnIndex);
+            String homeprice_str = cursor.getString(homepriceColumnIndex).toString().trim();
 
             mNameEditText.setText(name);
             mDescEditText.setText(desc);
             mSizeEditText.setText(Integer.toString(sizerai));
-
+            mPhoneEditText.setText(phone_str);
+            mHomePrice.setText(homeprice_str);
             switch (province) {
                 case LandEntry.PROVINCE_AROUNDBANGKOK:
                     mProvinceSpinner.setSelection(1);
@@ -623,9 +646,9 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             mLatitude = mCurrentLocation.getLatitude();
             mLongitude = mCurrentLocation.getLongitude();
             TextView latitude_text = (TextView) findViewById(R.id.latitude);
-            latitude_text.setText("" +mLatitude);
+            latitude_text.setText("Latitude: " +mLatitude);
             TextView longitude_text = (TextView) findViewById(R.id.longitude);
-            longitude_text.setText("" + mLongitude);
+            longitude_text.setText("Longitude: " + mLongitude);
         }
     }
 }
