@@ -670,9 +670,9 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             mLatitude = mCurrentLocation.getLatitude();
             mLongitude = mCurrentLocation.getLongitude();
             TextView latitude_text = (TextView) findViewById(R.id.latitude);
-            latitude_text.setText("Latitude: " +mLatitude);
+            latitude_text.setText("" + mLatitude);
             TextView longitude_text = (TextView) findViewById(R.id.longitude);
-            longitude_text.setText("Longitude: " + mLongitude);
+            longitude_text.setText("" + mLongitude);
         }
     }
     public void mQuantitydisplay(){
