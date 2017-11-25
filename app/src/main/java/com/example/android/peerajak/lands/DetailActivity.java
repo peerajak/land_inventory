@@ -1,6 +1,7 @@
 package com.example.android.peerajak.lands;
 
 import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -48,6 +49,7 @@ public class DetailActivity extends AppCompatActivity  implements LoaderManager.
     private ImageView mIconPhoneView;
     private String mCurrentPhoneNumber;
     private TextView mHomePrice;
+    private final int REQUEST_EDIT=2;
     private TextView mQuantityTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,9 @@ public class DetailActivity extends AppCompatActivity  implements LoaderManager.
         Intent catalogIntent = getIntent();
         mCurrentLandUri = catalogIntent.getData();
         Log.i("DetailActivity", mCurrentLandUri.toString());
+        String[] parts = mCurrentLandUri.toString().split("/");
+        mCurrentId = Integer.parseInt(parts[4]);
+        Log.i("EditorActivity",mCurrentLandUri.toString()+":"+mCurrentId);
         getSupportLoaderManager().initLoader(mLoaderManagerId, null, this);
         mNameTextView = (TextView) findViewById(R.id.detail_land_name);
         mDescTextView = (TextView) findViewById(R.id.detail_land_desc);
@@ -200,7 +205,7 @@ public class DetailActivity extends AppCompatActivity  implements LoaderManager.
         Intent editorIntent = new Intent(DetailActivity.this, EditorActivity.class);
         Log.i("CatalogActivity","onClickListener:"+mCurrentLandUri.toString());
         editorIntent.setData(mCurrentLandUri);
-        startActivity(editorIntent);
+        startActivityForResult(editorIntent,REQUEST_EDIT);
         return super.onOptionsItemSelected(item);
     }
 
@@ -210,9 +215,23 @@ public class DetailActivity extends AppCompatActivity  implements LoaderManager.
     public void buy(View view){
         if(mQuantity>0) {
             mQuantity--;
+            ContentValues updateValues = new ContentValues();
+            updateValues.put(LandsContract.LandEntry.COLUMN_LAND_HOMEQUANTITY, mQuantity);
+            int num_effect = getContentResolver().update(LandsContract.LandEntry.CONTENT_URI, updateValues, LandsContract.LandEntry._ID+"="+mCurrentId, null);
+            if(num_effect == 1) {
+                Toast.makeText(this,"ORDER COMPLETED", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this,"ORDER NOT COMPLETED", Toast.LENGTH_SHORT).show();
+            }
+
             mQuantitydisplay();
         }else{
             Toast.makeText(this,"OUT OF STOCK", Toast.LENGTH_SHORT).show();
         }
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent intentdata)  {
+        finish();
+    }
+
 }
