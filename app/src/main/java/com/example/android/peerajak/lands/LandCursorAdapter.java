@@ -1,9 +1,11 @@
 package com.example.android.peerajak.lands;
 
+import android.content.ContentValues;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.widget.Button;
 import android.widget.CursorAdapter;
 
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.android.peerajak.lands.data.LandsContract.LandEntry;
@@ -55,8 +58,9 @@ public class LandCursorAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        ViewHolderItem holder = (ViewHolderItem) view.getTag();
-
+        final ViewHolderItem holder = (ViewHolderItem) view.getTag();
+        final int position = cursor.getPosition();
+        final long id = getItemId(position);
         String name_meal = cursor.getString(cursor.getColumnIndexOrThrow(LandEntry.COLUMN_LAND_NAME));
         String meal_desc = cursor.getString(cursor.getColumnIndexOrThrow(LandEntry.COLUMN_LAND_DESC));
         String image_path = cursor.getString(cursor.getColumnIndexOrThrow(LandEntry.COLUMN_LAND_IMAGE));
@@ -72,21 +76,52 @@ public class LandCursorAdapter extends CursorAdapter {
         holder.latitude_text.setText("Latitude: "+latitude);
         holder.longitude_text.setText("Longitude: "+longitude);
         holder.quantity_text.setText("Quantity: "+quantity_str);
-        holder.price_text.setText("Price"+price_str);
+
+        final int quantity = Integer.parseInt(quantity_str);
+        holder.quantity_text.setText("Quantity: "+quantity);
+
+        holder.buy_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(quantity>0) {
+                    ContentValues updateValues = new ContentValues();
+                    updateValues.put(LandsContract.LandEntry.COLUMN_LAND_HOMEQUANTITY, quantity-1);
+                    int num_effect = v.getContext().getContentResolver().update(LandsContract.LandEntry.CONTENT_URI, updateValues, LandsContract.LandEntry._ID+"="+id, null);
+                    if(num_effect == 1) {
+                        Toast.makeText(v.getContext(),"ORDER COMPLETED SUCCESSFULLY", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Toast.makeText(v.getContext(),"ORDER NOT COMPLETED", Toast.LENGTH_SHORT).show();
+                    }
+
+
+                    holder.quantity_text.setText("Quantity: "+quantity);
+                }else{
+                    Toast.makeText(v.getContext(),"OUT OF STOCK", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
         /*try {
             // TODO I will set OnClickListener where, if the list item clicked, the full size image will show up
             // TODO two lines below will do that.
-            //Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), Uri.fromFile(file));
-            // image_imgview.setImageBitmap(crupAndScale(bitmap,150));
-            Bitmap thumbImage = ThumbnailUtils.extractThumbnail(
-                    BitmapFactory.decodeFile(file.getAbsolutePath()),
-                    THUMBSIZE,
-                    THUMBSIZE);
-            holder.image_imgview.setImageBitmap(thumbImage);
-        } catch (Exception e) {
-            Log.e("ShowlistActivity","Create bitmap exception");
-        }*/
+        if(quantity>0) {
+            quantity--;
+            ContentValues updateValues = new ContentValues();
+            updateValues.put(LandsContract.LandEntry.COLUMN_LAND_HOMEQUANTITY, quantity);
+            int num_effect = getContentResolver().update(LandsContract.LandEntry.CONTENT_URI, updateValues, LandsContract.LandEntry._ID+"="+mCurrentId, null);
+            if(num_effect == 1) {
+                Toast.makeText(this,"ORDER COMPLETED", Toast.LENGTH_SHORT).show();
+            }else {
+                Toast.makeText(this,"ORDER NOT COMPLETED", Toast.LENGTH_SHORT).show();
+            }
+
+
+            quantitydisplay();
+        }else{
+            Toast.makeText(this,"OUT OF STOCK", Toast.LENGTH_SHORT).show();
+        }
+        */
         Log.i("MainActivity","image_path="+image_path);
         if(image_path!=null) {
             File file = new File(image_path);
@@ -105,6 +140,8 @@ public class LandCursorAdapter extends CursorAdapter {
         TextView longitude_text;
         TextView quantity_text;
         TextView price_text;
+        Button buy_button;
+
         public ViewHolderItem(View convertView){
             name_txtview = (TextView) convertView.findViewById(R.id.name);
             desc_txtview = (TextView) convertView.findViewById(R.id.description);
@@ -113,6 +150,7 @@ public class LandCursorAdapter extends CursorAdapter {
             longitude_text = (TextView) convertView.findViewById(R.id.out_longitude);
             quantity_text = (TextView) convertView.findViewById(R.id.out_quantity);
             price_text = (TextView) convertView.findViewById(R.id.out_price);
+            buy_button = (Button) convertView.findViewById(R.id.buy_item);
         }
     }
 }

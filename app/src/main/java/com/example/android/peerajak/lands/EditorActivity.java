@@ -153,6 +153,7 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
                 .addOnConnectionFailedListener(this)
                 .build();
 
+
     }
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override

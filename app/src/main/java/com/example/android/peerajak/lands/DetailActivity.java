@@ -224,6 +224,7 @@ public class DetailActivity extends AppCompatActivity  implements LoaderManager.
                 Toast.makeText(this,"ORDER NOT COMPLETED", Toast.LENGTH_SHORT).show();
             }
 
+
             mQuantitydisplay();
         }else{
             Toast.makeText(this,"OUT OF STOCK", Toast.LENGTH_SHORT).show();

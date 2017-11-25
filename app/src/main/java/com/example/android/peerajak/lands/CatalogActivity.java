@@ -153,4 +153,6 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             // Log.i("CatalogActivity","1 row added");
         }
     }
+
+
 }
