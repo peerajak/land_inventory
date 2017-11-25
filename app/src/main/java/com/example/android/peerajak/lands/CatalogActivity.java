@@ -58,7 +58,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
             LandEntry.COLUMN_LAND_SIZE,
             LandEntry.COLUMN_LAND_LATITUDE,
             LandEntry.COLUMN_LAND_LONGITUDE,
-            //LandEntry.COLUMN_LAND_HOMEPRICE,
+            LandEntry.COLUMN_LAND_HOMEQUANTITY,
+            LandEntry.COLUMN_LAND_HOMEPRICE,
             LandEntry.COLUMN_LAND_IMAGE
     };
 

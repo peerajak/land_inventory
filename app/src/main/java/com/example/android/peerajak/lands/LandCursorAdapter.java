@@ -62,13 +62,17 @@ public class LandCursorAdapter extends CursorAdapter {
         String image_path = cursor.getString(cursor.getColumnIndexOrThrow(LandEntry.COLUMN_LAND_IMAGE));
         double latitude = cursor.getDouble(cursor.getColumnIndexOrThrow(LandEntry.COLUMN_LAND_LATITUDE));
         double longitude = cursor.getDouble(cursor.getColumnIndexOrThrow(LandEntry.COLUMN_LAND_LONGITUDE));
+        String price_str = cursor.getString(cursor.getColumnIndexOrThrow(LandEntry.COLUMN_LAND_HOMEPRICE));
+        String quantity_str = cursor.getString(cursor.getColumnIndexOrThrow(LandEntry.COLUMN_LAND_HOMEQUANTITY));
         if (TextUtils.isEmpty(meal_desc)) {
             meal_desc = "No Description";
         }
         holder.name_txtview.setText(name_meal);
-        holder.desc_txtview.setText(meal_desc);
+        holder.desc_txtview.setText("Description: "+meal_desc);
         holder.latitude_text.setText("Latitude: "+latitude);
         holder.longitude_text.setText("Longitude: "+longitude);
+        holder.quantity_text.setText("Quantity: "+quantity_str);
+        holder.price_text.setText("Price"+price_str);
 
         /*try {
             // TODO I will set OnClickListener where, if the list item clicked, the full size image will show up
@@ -99,13 +103,16 @@ public class LandCursorAdapter extends CursorAdapter {
         ImageView image_imgview;
         TextView latitude_text;
         TextView longitude_text;
+        TextView quantity_text;
+        TextView price_text;
         public ViewHolderItem(View convertView){
             name_txtview = (TextView) convertView.findViewById(R.id.name);
             desc_txtview = (TextView) convertView.findViewById(R.id.description);
             image_imgview = (ImageView) convertView.findViewById(R.id.item_image);
             latitude_text = (TextView) convertView.findViewById(R.id.out_latitude);
             longitude_text = (TextView) convertView.findViewById(R.id.out_longitude);
-
+            quantity_text = (TextView) convertView.findViewById(R.id.out_quantity);
+            price_text = (TextView) convertView.findViewById(R.id.out_price);
         }
     }
 }
