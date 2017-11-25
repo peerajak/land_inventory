@@ -49,6 +49,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.net.Uri;
 
+import com.bumptech.glide.Glide;
 import com.example.android.peerajak.lands.data.LandsContract;
 import com.example.android.peerajak.lands.data.LandsContract.LandEntry;
 
@@ -75,10 +76,10 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
     /** EditText field to enter the land's breed */
     private EditText mDescEditText;
     private int mCurrentId=0;
-    private int start_home_quantity=0;
+    private final int start_home_quantity=0;
     /** EditText field to enter the land's weight */
     private EditText mSizeEditText;
-
+    private int mQuantity=0;
     /** EditText field to enter the land's province */
     private Spinner mProvinceSpinner;
     private final int mLoaderManagerId=1;
@@ -89,7 +90,7 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
     private Button mTakePhoto;
     private EditText mPhoneEditText;
     private EditText mHomePrice;
-
+    private TextView mQuantityTextView;
     /**
      * Gender of the land. The possible values are:
      * 0 for unknown province, 1 for male, 2 for female.
@@ -122,7 +123,7 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             invalidateOptionsMenu();
         }else{
             setTitle(R.string.editor_activity_title_edit_land);
-            mTakePhoto.setVisibility(View.GONE);
+            //mTakePhoto.setVisibility(View.GONE);
             Log.i("EditorActivity",mCurrentLandUri.toString());
             mIsNewInsert = false;
             getSupportLoaderManager().initLoader(mLoaderManagerId, null, this);
@@ -137,12 +138,13 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         mSizeEditText = (EditText) findViewById(R.id.edit_land_size);
         mProvinceSpinner = (Spinner) findViewById(R.id.spinner_province);
         mPhoneEditText = (EditText) findViewById(R.id.edit_phone_number);
+        mHomePrice = (EditText) findViewById(R.id.home_price);
+        mQuantityTextView = (TextView) findViewById(R.id.quantity_text_view);
         setupSpinner();
         mDbHelper = new LandsDbhelper(this);
         mNameEditText.setOnTouchListener(mTouchListener);
         mDescEditText.setOnTouchListener(mTouchListener);
         mSizeEditText.setOnTouchListener(mTouchListener);
-        mHomePrice = (EditText) findViewById(R.id.home_price);
         mProvinceSpinner.setOnTouchListener(mTouchListener);
         mImageView = (ImageView) findViewById(R.id.camphoto);
         googleApiClient = new GoogleApiClient.Builder(this)
@@ -420,8 +422,9 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         values.put(LandEntry.COLUMN_LAND_LONGITUDE,mLongitude);
         values.put(LandEntry.COLUMN_LAND_IMAGE,mCurrentPhotoPath);
         values.put(LandEntry.COLUMN_LAND_PHONE,currentPhone);
-        //values.put(LandEntry.COLUMN_LAND_HOMEQUANTITY,start_home_quantity);
+        values.put(LandEntry.COLUMN_LAND_HOMEQUANTITY,start_home_quantity);
         values.put(LandEntry.COLUMN_LAND_HOMEPRICE,homeprice);
+        values.put(LandEntry.COLUMN_LAND_HOMEQUANTITY,mQuantity);
         Log.i("EditorActivity","insertLand");
         Uri newUri = getContentResolver().insert(LandEntry.CONTENT_URI, values);
         Log.i("EditorActivity","insertLand");
@@ -456,8 +459,10 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         values.put(LandEntry.COLUMN_LAND_LATITUDE,mLatitude);
         values.put(LandEntry.COLUMN_LAND_LONGITUDE,mLongitude);
         values.put(LandEntry.COLUMN_LAND_PHONE,currentPhone);
-        //values.put(LandEntry.COLUMN_LAND_IMAGE,mCurrentPhotoPath);
         values.put(LandEntry.COLUMN_LAND_HOMEPRICE,homeprice);
+        values.put(LandEntry.COLUMN_LAND_HOMEQUANTITY,mQuantity);
+        values.put(LandEntry.COLUMN_LAND_IMAGE,mCurrentPhotoPath);
+
 
         int num_effect = getContentResolver().update(mCurrentLandUri, values,null,null);
         if(num_effect == 0) {
@@ -488,7 +493,7 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
                 LandsContract.LandEntry.COLUMN_LAND_SIZE,
                 LandsContract.LandEntry.COLUMN_LAND_PHONE,
                 LandsContract.LandEntry.COLUMN_LAND_HOMEPRICE,
-                //LandsContract.LandEntry.COLUMN_LAND_HOMEQUANTITY,
+                LandsContract.LandEntry.COLUMN_LAND_HOMEQUANTITY,
                 LandsContract.LandEntry.COLUMN_LAND_IMAGE};
 
 
@@ -513,6 +518,8 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             int sizeraiColumnIndex = cursor.getColumnIndex(LandEntry.COLUMN_LAND_SIZE);
             int phoneColumnIndex = cursor.getColumnIndex(LandEntry.COLUMN_LAND_PHONE);
             int homepriceColumnIndex = cursor.getColumnIndex(LandEntry.COLUMN_LAND_HOMEPRICE);
+            int quantityColumnIndex = cursor.getColumnIndex(LandEntry.COLUMN_LAND_HOMEQUANTITY);
+
             // Extract out the value from the Cursor for the given column index
             String name = cursor.getString(nameColumnIndex);
             String desc = cursor.getString(descColumnIndex);
@@ -520,12 +527,20 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             int province = cursor.getInt(provinceColumnIndex);
             int sizerai = cursor.getInt(sizeraiColumnIndex);
             String homeprice_str = cursor.getString(homepriceColumnIndex).toString().trim();
+            String quantity_str = cursor.getString(quantityColumnIndex).toString().trim();
+            mCurrentPhotoPath = cursor.getString(cursor.getColumnIndexOrThrow(LandEntry.COLUMN_LAND_IMAGE));
+            try{
+                mQuantity = Integer.parseInt(quantity_str);
+            }catch (Exception e){
+                Log.e("EditorActivity","Quantity Parse Int Error");
+            }
 
             mNameEditText.setText(name);
             mDescEditText.setText(desc);
             mSizeEditText.setText(Integer.toString(sizerai));
             mPhoneEditText.setText(phone_str);
             mHomePrice.setText(homeprice_str);
+            mQuantitydisplay();
             switch (province) {
                 case LandEntry.PROVINCE_AROUNDBANGKOK:
                     mProvinceSpinner.setSelection(1);
@@ -536,6 +551,13 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
                 default:
                     mProvinceSpinner.setSelection(0);
                     break;
+            }
+            if(mCurrentPhotoPath!=null) {
+                File file = new File(mCurrentPhotoPath);
+                Uri uri = Uri.fromFile(file);
+                Glide.with(this)
+                        .load(uri) // Uri of the picture
+                        .into(mImageView);
             }
 
         }
@@ -653,4 +675,22 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             longitude_text.setText("Longitude: " + mLongitude);
         }
     }
+    public void mQuantitydisplay(){
+        mQuantityTextView.setText("" + mQuantity);
+    }
+    public void incrementQuantity(View view) {
+        mQuantity++;
+        mQuantitydisplay();
+
+    }
+    public void decrementQuantity(View view) {
+
+        if(mQuantity>0) {
+            mQuantity--;
+            mQuantitydisplay();
+        }else{
+            Toast.makeText(this,"Quantity must be non-negative value.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
 }

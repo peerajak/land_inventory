@@ -18,9 +18,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.android.peerajak.lands.data.LandsContract;
@@ -37,7 +39,7 @@ public class DetailActivity extends AppCompatActivity  implements LoaderManager.
     private int mCurrentId=0;
     /** TextView field to enter the land's weight */
     private TextView mSizeTextView;
-
+    private int mQuantity;
     /** TextView field to enter the land's province */
     private Spinner mProvinceSpinner;
     private final int mLoaderManagerId=1;
@@ -45,6 +47,8 @@ public class DetailActivity extends AppCompatActivity  implements LoaderManager.
     private ImageView mImageView;
     private ImageView mIconPhoneView;
     private String mCurrentPhoneNumber;
+    private TextView mHomePrice;
+    private TextView mQuantityTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,6 +65,8 @@ public class DetailActivity extends AppCompatActivity  implements LoaderManager.
         mProvinceSpinner = (Spinner) findViewById(R.id.detailspinner_province);
         mImageView = (ImageView) findViewById(R.id.detail_land_image);
         mPhoneNumber = (TextView) findViewById(R.id.detail_phone_number);
+        mHomePrice = (TextView) findViewById(R.id.detail_home_price);
+        mQuantityTextView = (TextView) findViewById(R.id.detail_quantity_text_view);
         setupSpinner();
         mDbHelper = new LandsDbhelper(this);
         mIconPhoneView = (ImageView) findViewById(R.id.detail_phone_icon);
@@ -94,8 +100,8 @@ public class DetailActivity extends AppCompatActivity  implements LoaderManager.
                 LandsContract.LandEntry.COLUMN_LAND_PROVINCE,
                 LandsContract.LandEntry.COLUMN_LAND_SIZE,
                 LandsContract.LandEntry.COLUMN_LAND_PHONE,
-                //LandsContract.LandEntry.COLUMN_LAND_HOMEPRICE,
-                //LandsContract.LandEntry.COLUMN_LAND_HOMEQUANTITY,
+                LandsContract.LandEntry.COLUMN_LAND_HOMEPRICE,
+                LandsContract.LandEntry.COLUMN_LAND_HOMEQUANTITY,
                 LandsContract.LandEntry.COLUMN_LAND_IMAGE};
 
         // This loader will execute the ContentProvider's query method on a background thread
@@ -124,12 +130,23 @@ public class DetailActivity extends AppCompatActivity  implements LoaderManager.
             String desc = cursor.getString(descColumnIndex);
             int province = cursor.getInt(provinceColumnIndex);
             int sizerai = cursor.getInt(sizeraiColumnIndex);
+            int homepriceColumnIndex = cursor.getColumnIndex(LandsContract.LandEntry.COLUMN_LAND_HOMEPRICE);
+            int quantityColumnIndex = cursor.getColumnIndex(LandsContract.LandEntry.COLUMN_LAND_HOMEQUANTITY);
             mCurrentPhoneNumber = cursor.getString(cursor.getColumnIndex(LandsContract.LandEntry.COLUMN_LAND_PHONE));
+            String homeprice_str = cursor.getString(homepriceColumnIndex).toString().trim();
+            String quantity_str = cursor.getString(quantityColumnIndex).toString().trim();
             mNameTextView.setText(name);
             mDescTextView.setText(desc);
             mSizeTextView.setText(Integer.toString(sizerai));
             mPhoneNumber.setText(mCurrentPhoneNumber);
+            try{
+                mQuantity = Integer.parseInt(quantity_str);
+            }catch (Exception e){
+                Log.e("EditorActivity","Quantity Parse Int Error");
+            }
 
+            mHomePrice.setText(homeprice_str);
+            mQuantitydisplay();
             switch (province) {
                 case LandsContract.LandEntry.PROVINCE_AROUNDBANGKOK:
                     mProvinceSpinner.setSelection(1);
@@ -187,4 +204,15 @@ public class DetailActivity extends AppCompatActivity  implements LoaderManager.
         return super.onOptionsItemSelected(item);
     }
 
+    public void mQuantitydisplay(){
+        mQuantityTextView.setText("" + mQuantity);
+    }
+    public void buy(View view){
+        if(mQuantity>0) {
+            mQuantity--;
+            mQuantitydisplay();
+        }else{
+            Toast.makeText(this,"OUT OF STOCK", Toast.LENGTH_SHORT).show();
+        }
+    }
 }

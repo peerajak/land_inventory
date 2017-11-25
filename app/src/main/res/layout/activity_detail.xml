@@ -124,8 +124,46 @@
 
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home Quantity:"/>
 
+        <TextView
+            android:id="@+id/detail_quantity_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="0"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Home Price:"/>
+        <TextView
+            android:id="@+id/detail_home_price"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+        <Button
+            android:id="@+id/takephoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BUY"
+            android:onClick="buy"/>
+
+    </LinearLayout>
     <!-- Measurement category -->
     <LinearLayout
         android:id="@+id/detailcontainer_measurement"
@@ -139,7 +177,7 @@
             android:text="@string/category_measurement" />
 
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
@@ -157,31 +195,12 @@
                 android:id="@+id/detaillabel_size_units"
                 style="@style/EditorUnitsStyle"
                 android:text="@string/unit_land_weight" />
-        </RelativeLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home Quantity:"/>
-            <TextView
-                android:id="@+id/home_quantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home Price:"/>
-            <TextView
-                android:id="@+id/home_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+
+
+
     </LinearLayout>
+
+
 </LinearLayout>
 
