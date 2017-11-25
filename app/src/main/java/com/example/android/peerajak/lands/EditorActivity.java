@@ -70,17 +70,12 @@ import java.util.Date;
  */
 public class EditorActivity extends AppCompatActivity  implements LoaderManager.LoaderCallbacks<Cursor> ,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener , LocationListener{
     private LandsDbhelper mDbHelper;
-    /** EditText field to enter the land's name */
     private EditText mNameEditText;
-
-    /** EditText field to enter the land's breed */
     private EditText mDescEditText;
     private int mCurrentId=0;
     private final int start_home_quantity=0;
-    /** EditText field to enter the land's weight */
     private EditText mSizeEditText;
     private int mQuantity=0;
-    /** EditText field to enter the land's province */
     private Spinner mProvinceSpinner;
     private final int mLoaderManagerId=1;
     private Uri mCurrentLandUri=null;
@@ -91,10 +86,6 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
     private EditText mPhoneEditText;
     private EditText mHomePrice;
     private TextView mQuantityTextView;
-    /**
-     * Gender of the land. The possible values are:
-     * 0 for unknown province, 1 for male, 2 for female.
-     */
     private int mProvince = 0;
     String mCurrentPhotoPath;
 
@@ -110,7 +101,6 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
-
         Intent catalogIntent = getIntent();
         mCurrentLandUri = catalogIntent.getData();
         mTakePhoto = (Button) findViewById(R.id.takephoto);
@@ -123,16 +113,12 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             invalidateOptionsMenu();
         }else{
             setTitle(R.string.editor_activity_title_edit_land);
-            //mTakePhoto.setVisibility(View.GONE);
-            Log.i("EditorActivity",mCurrentLandUri.toString());
             mIsNewInsert = false;
             getSupportLoaderManager().initLoader(mLoaderManagerId, null, this);
             String[] parts = mCurrentLandUri.toString().split("/");
             mCurrentId = Integer.parseInt(parts[4]);
-            Log.i("EditorActivity",mCurrentLandUri.toString()+":"+mCurrentId);
         }
 
-        // Find all relevant views that we will need to read user input from
         mNameEditText = (EditText) findViewById(R.id.edit_land_name);
         mDescEditText = (EditText) findViewById(R.id.edit_land_desc);
         mSizeEditText = (EditText) findViewById(R.id.edit_land_size);
@@ -164,14 +150,11 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
     };
     @Override
     public void onBackPressed() {
-        // If the land hasn't changed, continue with handling back button press
+
         if (!mLandHasChanged) {
             super.onBackPressed();
             return;
         }
-
-        // Otherwise if there are unsaved changes, setup a dialog to warn the user.
-        // Create a click listener to handle the user confirming that changes should be discarded.
         DialogInterface.OnClickListener discardButtonClickListener =
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -181,7 +164,7 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
                     }
                 };
 
-        // Show dialog that there are unsaved changes
+
         showUnsavedChangesDialog(discardButtonClickListener);
     }
 
@@ -214,12 +197,12 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         LocationAvailability locationAvailability = LocationServices.FusedLocationApi.getLocationAvailability(googleApiClient);
 
         if (locationAvailability.isLocationAvailable()) {
-            // Call Location Services
+
             LocationRequest locationRequest = new LocationRequest()
                     .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
                     .setInterval(1000);
             Log.i("MainActivity","onConnected2");
-            //if(locationRequest!=null)
+
             try {
                 LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
             }catch (Exception e){
@@ -227,7 +210,7 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             }
             Log.i("MainActivity","onConnected3");
         } else {
-            // Do something when Location Provider not available
+
         }
     }
 
@@ -259,19 +242,15 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             if( resultCode == RESULT_OK) {
 
                 File file = new File(mCurrentPhotoPath);
-                //String currentThumbnailPath = new StringBuilder(mCurrentPhotoPath).insert(mCurrentPhotoPath.length()-4, "thumbnail").toString();
+
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), Uri.fromFile(file));
                     Bitmap thumbnail = crupAndScale(bitmap.copy(bitmap.getConfig(),true),150);
                     mImageView.setImageBitmap(thumbnail);
-                    //File fileThumbnail = new File(currentThumbnailPath); // the File to save , append increasing numeric counter to prevent files from getting overwritten.
-                    //OutputStream fOut = new FileOutputStream(file);
-                    //thumbnail.compress(Bitmap.CompressFormat.JPEG, 85, fOut);
                     MediaStore.Images.Media.insertImage(getContentResolver(), bitmap, "Title" , "Description");
                 } catch (Exception e) {
                     Log.e("MainActivity","Create bitmap exception");
                 }
-                //addImageToGallery(mCurrentPhotoPath,MainActivity.this);
 
             }
             if( resultCode == RESULT_CANCELED)
@@ -309,13 +288,10 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         // the spinner will use the default layout
         ArrayAdapter provinceSpinnerAdapter = ArrayAdapter.createFromResource(this,
                 R.array.array_province_options, android.R.layout.simple_spinner_item);
-
         // Specify dropdown layout style - simple list view with 1 item per line
         provinceSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
-
         // Apply the adapter to the spinner
         mProvinceSpinner.setAdapter(provinceSpinnerAdapter);
-
         // Set the integer mSelected to the constant values
         mProvinceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -388,13 +364,8 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             // Respond to a click on the "Delete" menu option
             case R.id.action_delete:
                 showDeleteConfirmationDialog();
-                //finishInsert();
                 return true;
-            // Respond to a click on the "Up" arrow button in the app bar
-            //case android.R.id.home:
-                // Navigate back to parent activity (CatalogActivity)
-               // NavUtils.navigateUpFromSameTask(this);
-               // return true;
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -410,11 +381,9 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(sizerai_str) || TextUtils.isEmpty(currentPhone) || TextUtils.isEmpty(homeprice_str)){
             return;
         }
-        Log.i("EditorActivity","insertLand");
         int sizerai = Integer.parseInt(sizerai_str.trim());
         int homeprice =Integer.parseInt(homeprice_str.trim());
         ContentValues values = new ContentValues();
-        Log.i("EditorActivity","insertLand");
         values.put(LandEntry.COLUMN_LAND_NAME,name.trim());
         values.put(LandEntry.COLUMN_LAND_DESC,desc.trim());
         values.put(LandEntry.COLUMN_LAND_PROVINCE,mProvince);
@@ -426,14 +395,11 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
         values.put(LandEntry.COLUMN_LAND_HOMEQUANTITY,start_home_quantity);
         values.put(LandEntry.COLUMN_LAND_HOMEPRICE,homeprice);
         values.put(LandEntry.COLUMN_LAND_HOMEQUANTITY,mQuantity);
-        Log.i("EditorActivity","insertLand");
         Uri newUri = getContentResolver().insert(LandEntry.CONTENT_URI, values);
-        Log.i("EditorActivity","insertLand");
         if(newUri == null) {
             Toast.makeText(this,"Error insertion",Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(this,"1 row added",Toast.LENGTH_SHORT).show();
-            // Log.i("CatalogActivity","1 row added");
         }
     }
     private void saveLand(){
@@ -470,7 +436,6 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             Toast.makeText(this,"Error insertion",Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(this,num_effect+" row updated",Toast.LENGTH_SHORT).show();
-            // Log.i("CatalogActivity","1 row added");
         }
     }
     private void finishInsert(){
@@ -610,7 +575,6 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
             Toast.makeText(this,"Error deletion",Toast.LENGTH_SHORT).show();
         }else {
             Toast.makeText(this,num_row_effect+" row deleted",Toast.LENGTH_SHORT).show();
-            // Log.i("CatalogActivity","1 row added");
         }
     }
 
@@ -641,7 +605,6 @@ public class EditorActivity extends AppCompatActivity  implements LoaderManager.
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
             }
 
-            //startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
 

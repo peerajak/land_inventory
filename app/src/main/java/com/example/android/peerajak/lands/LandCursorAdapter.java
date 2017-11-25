@@ -28,7 +28,7 @@ import java.io.File;
 
 public class LandCursorAdapter extends CursorAdapter {
 
-    public final int THUMBSIZE=120;
+
     public LandCursorAdapter(Context context, Cursor c) {
         super(context, c, 0 /* flags */);
     }
@@ -102,26 +102,6 @@ public class LandCursorAdapter extends CursorAdapter {
         });
 
 
-        /*try {
-            // TODO I will set OnClickListener where, if the list item clicked, the full size image will show up
-            // TODO two lines below will do that.
-        if(quantity>0) {
-            quantity--;
-            ContentValues updateValues = new ContentValues();
-            updateValues.put(LandsContract.LandEntry.COLUMN_LAND_HOMEQUANTITY, quantity);
-            int num_effect = getContentResolver().update(LandsContract.LandEntry.CONTENT_URI, updateValues, LandsContract.LandEntry._ID+"="+mCurrentId, null);
-            if(num_effect == 1) {
-                Toast.makeText(this,"ORDER COMPLETED", Toast.LENGTH_SHORT).show();
-            }else {
-                Toast.makeText(this,"ORDER NOT COMPLETED", Toast.LENGTH_SHORT).show();
-            }
-
-
-            quantitydisplay();
-        }else{
-            Toast.makeText(this,"OUT OF STOCK", Toast.LENGTH_SHORT).show();
-        }
-        */
         Log.i("MainActivity","image_path="+image_path);
         if(image_path!=null) {
             File file = new File(image_path);

@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2016 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2016 The Android Open Source Project
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
      You may obtain a copy of the License at
@@ -9,10 +8,8 @@
      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
      See the License for the specific language governing permissions and
      limitations under the License.
--->
-<!-- Layout for the editor -->
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+--><!-- Layout for the editor -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -28,50 +25,54 @@
 
         <!-- Label -->
         <TextView
-            android:text="@string/category_overview"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/category_overview" />
 
         <!-- Input fields -->
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:paddingLeft="4dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="4dp">
 
             <!-- Name field -->
             <EditText
                 android:id="@+id/edit_land_name"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_land_name"
-                android:inputType="textCapWords"
-                style="@style/EditorFieldStyle" />
+                android:inputType="textCapWords" />
 
             <!-- Breed field -->
             <EditText
                 android:id="@+id/edit_land_desc"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_land_desc"
-                android:inputType="textCapWords"
-                style="@style/EditorFieldStyle" />
+                android:inputType="textCapWords" />
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Supplier Phone Number:"/>
+            android:text="Supplier Phone Number:" />
+
         <ImageView
             android:id="@+id/edit_phone_icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@mipmap/ic_phone"/>
+            android:src="@mipmap/ic_phone" />
+
         <EditText
             android:id="@+id/edit_phone_number"
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:text=""/>
+            android:text="" />
     </LinearLayout>
     <!-- Gender category -->
     <LinearLayout
@@ -82,65 +83,72 @@
 
         <!-- Label -->
         <TextView
-            android:text="@string/category_province"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/category_province" />
 
         <!-- Input field -->
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
             android:orientation="vertical">
 
             <!-- Gender drop-down spinner -->
             <Spinner
                 android:id="@+id/spinner_province"
-                android:layout_height="48dp"
                 android:layout_width="wrap_content"
+                android:layout_height="48dp"
                 android:paddingRight="16dp"
-                android:spinnerMode="dropdown"/>
+                android:spinnerMode="dropdown" />
         </LinearLayout>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <ImageView
             android:id="@+id/camphoto"
             android:layout_width="80dp"
             android:layout_height="80dp" />
+
         <Button
             android:id="@+id/takephoto"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:text="take photo"
-            android:onClick="takePhoto"/>
+            android:onClick="takePhoto"
+            android:text="take photo" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/location_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="status:"/>
+            android:text="status:" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Latitude:"/>
+                android:text="Latitude:" />
+
             <TextView
                 android:id="@+id/latitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""/>
+                android:text="" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -149,15 +157,17 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Longitude:"/>
+                android:text="Longitude:" />
+
             <TextView
                 android:id="@+id/longitude"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""/>
+                android:text="" />
         </LinearLayout>
 
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -167,26 +177,29 @@
             android:id="@+id/get_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Get GPS"
-            android:onClick="getGPSclicked"/>
+            android:onClick="getGPSclicked"
+            android:text="Get GPS" />
 
     </LinearLayout>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Home Quantity:"/>
+        android:text="Home Quantity:" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
+
         <Button
             android:id="@+id/button_increment"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:onClick="incrementQuantity"
             android:padding="2dp"
-            android:text="+"
-            android:onClick="incrementQuantity"/>
+            android:text="+" />
+
         <TextView
             android:id="@+id/quantity_text_view"
             android:layout_width="wrap_content"
@@ -194,21 +207,25 @@
             android:padding="2dp"
             android:text="0"
             android:textColor="@android:color/black" />
+
         <Button
             android:id="@+id/button_decrement"
-            android:layout_height="30dp"
             android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:onClick="decrementQuantity"
             android:padding="2dp"
-            android:text="-"
-            android:onClick="decrementQuantity"/>
+            android:text="-" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Home Price:"/>
+            android:text="Home Price:" />
+
         <EditText
             android:id="@+id/home_price"
             android:layout_width="100dp"
@@ -223,29 +240,29 @@
 
         <!-- Label -->
         <TextView
-            android:text="@string/category_measurement"
-            style="@style/CategoryStyle" />
+            style="@style/CategoryStyle"
+            android:text="@string/category_measurement" />
 
         <!-- Input fields -->
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="2"
-            android:paddingLeft="4dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:paddingLeft="4dp">
 
             <!-- Weight field -->
             <EditText
                 android:id="@+id/edit_land_size"
+                style="@style/EditorFieldStyle"
                 android:hint="@string/hint_land_size"
-                android:inputType="number"
-                style="@style/EditorFieldStyle" />
+                android:inputType="number" />
 
             <!-- Units for weight (kg) -->
             <TextView
                 android:id="@+id/label_size_units"
-                android:text="@string/unit_land_weight"
-                style="@style/EditorUnitsStyle"/>
+                style="@style/EditorUnitsStyle"
+                android:text="@string/unit_land_weight" />
         </LinearLayout>
 
     </LinearLayout>
